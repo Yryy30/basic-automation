@@ -32,7 +32,7 @@ Cart
     Click Button    id:add-to-cart-sauce-labs-bike-light
     Click Button    id:add-to-cart-sauce-labs-fleece-jacket
     Click Element   class:shopping_cart_link
-    Sleep           3    
+    Sleep           2    
 
 *** Test Cases ***
 # Login
@@ -73,15 +73,15 @@ checkout
     Cart
     Click Button                   id:checkout
     Page Should Contain Element    xpath://div[@id="checkout_info_container"]
-    Sleep         3
+    Sleep         2
     Input Text    id:first-name    demo123
     Input Text    id:last-name     demo123
     Input Text    id:postal-code   112233
     Submit Form
     Page Should Contain Element    xpath://div[@id="checkout_summary_container"]
-    Sleep         3
+    Sleep         2
     Execute JavaScript             window.scrollTo(0, document.body.scrollHeight)
     Click Button                   id:finish
     Page Should Contain Element    xpath://div[@id="checkout_complete_container"]
-    Sleep         3
+    Sleep         2
     Logout
