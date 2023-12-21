@@ -1,7 +1,7 @@
 *** Settings ***
 Library            SeleniumLibrary
-Suite Setup        Open Browser        ${URL}    ${BROWSER}
-Suite Teardown     Close All Browsers
+#Suite Setup        Open Browser        ${URL}    ${BROWSER}
+#Suite Teardown     Close All Browsers
 
 
 *** Variables ***
@@ -15,58 +15,65 @@ ${PASSWORD2}    abcde12345
 
 *** Keywords ***
 Login
+    Open Browser                      ${URL}    ${BROWSER}
     Wait Until Element Is Visible     xpath://input[@name='user-name']
     Input Text    name:user-name      ${USERNAME}
     Input Text    name:password       ${PASSWORD}
     Submit Form
     Page Should Contain Element       xpath://div[@id="shopping_cart_container"]
+    Sleep         2    
 
-Logout
-    Click Button                   id:react-burger-menu-btn
-    Click Link                     id:logout_sidebar_link
-    Page Should Contain Element    xpath://div[@id="login_button_container"]
+# Logout
+#     Click Button                   id:react-burger-menu-btn
+#     Click Link                     id:logout_sidebar_link
+#     Page Should Contain Element    xpath://div[@id="login_button_container"]
 
 Cart
-    Login
-    Sleep           2    
+    Login    
     Click Button    id:add-to-cart-sauce-labs-bike-light
     Click Button    id:add-to-cart-sauce-labs-fleece-jacket
     Click Element   class:shopping_cart_link
-    Sleep           2    
+    Sleep           2
 
 *** Test Cases ***
 # Login
 # Positif Test
 login-success
     Login
-    Logout
+    Close Browser
+    
 
 # Negatif Test
 login-fail
+    Open Browser                      ${URL}    ${BROWSER}
     Wait Until Element Is Visible     xpath://input[@name='user-name']
     Input Text    name:user-name      ${USERNAME}
     Input Text    name:password       ${PASSWORD2}
     Submit Form
     Page Should Not Contain Element   xpath://div[@id="shopping_cart_container"]
+    Close Browser
 
 # Logout
 logout
     Login
-    Logout
+    Click Button                   id:react-burger-menu-btn
+    Click Link                     id:logout_sidebar_link
+    Page Should Contain Element    xpath://div[@id="login_button_container"]
+    Close Browser
     
 
 # Add to Cart
 add-cart
     Cart
-    Logout
+    Close Browser
 
 # Delete Cart
 delete-cart
-    Login
+    Cart
     Click Element   class:shopping_cart_link
     Click Button    id:remove-sauce-labs-bike-light
     Click Button    id:remove-sauce-labs-fleece-jacket
-    Logout
+    Close Browser
 
 # Checkout
 checkout
@@ -84,4 +91,4 @@ checkout
     Click Button                   id:finish
     Page Should Contain Element    xpath://div[@id="checkout_complete_container"]
     Sleep         2
-    Logout
+    Close Browser
